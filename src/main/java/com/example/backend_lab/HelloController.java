@@ -1,16 +1,14 @@
 package com.example.backend_lab;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HelloController {
 
-    @GetMapping("/hello")
-    public String Hello(Model model) {
-        model.addAttribute("message", "World");
-        return "hello";
+    @GetMapping("/chat")
+    public String Hello() {
+        return "chat";
     }
 
 }

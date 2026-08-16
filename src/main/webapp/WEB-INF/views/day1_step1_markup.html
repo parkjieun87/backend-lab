@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Day 1 - Step 1 : 마크업 구조</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body>
+
+<!--
+콘솔창에서 확인 완료
+// 1. 방 전체 개수 확인
+$('.chat-room').length
+
+// 2. 첫 번째 방 안에서 이름 찾기 (find = 아래로 탐색)(여러 자식들을 찾을 수 있음)
+$('.chat-room').first().find('.room-name').text()
+
+// 3. 삭제 버튼에서 시작해서 위로 올라가며 li 찾기 (closest = 위로 탐색)
+$('.room-delete').first().closest('.chat-room').attr('data-room-id')
+
+// 4. room-info의 부모는 누구?
+$('.room-info').first().parent().attr('class')
+
+// 5. room-list의 자식들은 누구?(바로 아래 자식만 찾음)
+$('#room-list').children()
+
+// 6. 함정: find로 위로 못 올라감 (빈 결과 나오는지 확인)
+$('.room-delete').first().find('.chat-room')
+-->
+
+<ul id="room-list">
+    <li class="chat-room" data-room-id="1">
+        <div class="room-avatar">지</div>
+        <div class="room-info">
+            <div class="room-name">지은</div>
+            <div class="room-last-msg">오늘 회의 몇 시예요?</div>
+        </div>
+        <button class="room-delete" type="button">삭제</button>
+    </li>
+
+    <li class="chat-room" data-room-id="2">
+        <div class="room-avatar">개</div>
+        <div class="room-info">
+            <div class="room-name">개발팀 채널</div>
+            <div class="room-last-msg">배포 완료했습니다</div>
+        </div>
+        <button class="room-delete" type="button">삭제</button>
+    </li>
+</ul>
+
+<input type="text" id="new-room-name" placeholder="새 채팅방 이름">
+<button id="add-room-btn" type="button">방 추가</button>
+
+<script>
+
+    // 1) 방 클릭 -> "클릭됨" 로그 (위임 방식으로, 4단계 전에 확인했던 것)
+    $('#room-list').on('click', '.chat-room', function () {
+        console.log("클릭됨");
+    });
+
+    // 방법 A : 각각 이벤트를 붙여서 새로 추가한 목록은 이벤트가 안붙여짐
+    // $('.chat-room').on('click', function () {
+    //     console.log('클릭됨:', $(this).find('.room-name').text());
+    // });
+    // 방법 B: 위임되기 때문에, 부모 안에 있는 애들은 다 이벤트가 붙여져서
+    // 추가로 생성한 방도 이벤트가 붙여짐
+
+    // 2) 삭제 버튼 -> "삭제됨" 로그 + stopPropagation
+    $('#room-list').on('click', '.room-delete', function (e) {
+        e.stopPropagation();
+        const $room = $(this).closest('.chat-room');
+        const roomName = $room.find('.room-name').text();
+        $room.remove();
+        console.log('삭제됨:', roomName);
+    });
+
+    // 3) 방 추가 버튼 -> #room-list에 새 li append
+    $('#add-room-btn').on('click', function () {
+        // 1. 입력값 가져오기
+        const roomName = $('#new-room-name').val();
+
+        if(!roomName){
+            return;
+        }
+
+        // 2. li 생성
+        const roomHtml = `
+        <li class="chat-room">
+            <span class="room-name">${roomName}</span>
+            <button class="room-delete">삭제</button>
+        </li>
+    `;
+        // 3. 목록에 추가
+        $('#room-list').append(roomHtml);
+
+        // 4.입력창 비우기
+        $('#new-room-name').val('');
+    });
+
+</script>
+</body>
+</html>

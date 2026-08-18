@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Day 2 - Step 1 : 스크롤 마크업</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        /* 스크롤을 만들려면 높이 제한 + overflow가 필수 */
+        #chat-box {
+            width: 400px;
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+        }
+        .message {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+<!-- jquery가 제공하는 함수는 괄호 필요
+ dom 속성값은 괄호 필요없음 $(...)[0]으로 순수 DOM 요소를 꺼낸 다음에 접근 -->
+
+<div id="chat-box">
+    <div class="message" data-index="1">메시지 1</div>
+    <div class="message" data-index="2">메시지 2</div>
+    <div class="message" data-index="3">메시지 3</div>
+    <div class="message" data-index="4">메시지 4</div>
+    <div class="message" data-index="5">메시지 5</div>
+    <div class="message" data-index="6">메시지 6</div>
+    <div class="message" data-index="7">메시지 7</div>
+    <div class="message" data-index="8">메시지 8</div>
+    <div class="message" data-index="9">메시지 9</div>
+    <div class="message" data-index="10">메시지 10</div>
+    <div class="message" data-index="11">메시지 11</div>
+    <div class="message" data-index="12">메시지 12</div>
+    <div class="message" data-index="13">메시지 13</div>
+    <div class="message" data-index="14">메시지 14</div>
+    <div class="message" data-index="15">메시지 15</div>
+</div>
+
+<script>
+    // function isAtBottom($container,threshold) {
+    //   const el = $container[0];
+    //   const downScroll = el.scrollHeight - el.clientHeight - el.scrollTop;
+    //   return threshold >= downScroll;
+    // }
+    //
+    // $('#chat-box').on('scroll',function (){
+    //    const atBottom = isAtBottom($(this), 5);
+    //    console.log('맨 아래?', atBottom);
+    // });
+
+    function findTopVisibleMessage($container) {
+        const containerTop = $container[0].getBoundingClientRect().top;
+        let result = null;
+
+        $container.find('.message').each(function (){
+           const messageTop = this.getBoundingClientRect().top;
+
+            if (messageTop >= containerTop) {
+                result = $(this).data('index');  // data-index 속성값 가져오기
+                return false; // jQuery의 each()에서 false를 리턴하면 반복을 즉시 멈춤 (break 역할)
+            }
+        });
+        return result;
+    }
+    $('#chat-box').on('scroll', function () {
+        const topMsg = findTopVisibleMessage($(this));
+        console.log('최상단 메시지:', topMsg);
+    });
+</script>
+</body>
+</html>

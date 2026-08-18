@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Day 3 - Step 1 : Position 비교</title>
+    <style>
+        body {
+            height: 2000px; /* 페이지 전체를 스크롤 가능하게 길게 만듦 */
+        }
+
+        .box {
+            width: 150px;
+            height: 60px;
+            color: #fff;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 기준이 되는 부모 박스 */
+        #parent {
+            position: relative; /* 이게 Containing Block 역할을 하게 됨 */
+            width: 400px;
+            height: 300px;
+            border: 3px dashed #333;
+            margin-top: 100px;
+        }
+
+        .static-box {
+            background: #999;
+            /* position 기본값 = static (아무것도 안 준 상태) */
+        }
+
+        .relative-box {
+            background: #4a90e2;
+            position: relative;
+            top: 20px;
+            left: 20px; /* 원래 자리에서 얼마나 이동했는지 */
+        }
+
+        .absolute-box {
+            background: #e94e4e;
+            position: absolute;
+            top: 0;
+            right: 0; /* 부모(#parent) 기준 우측 상단에 붙음 */
+        }
+
+        .fixed-box {
+            background: #2ecc71;
+            position: fixed;
+            bottom: 20px;
+            right: 20px; /* 스크롤해도 화면에 계속 고정 */
+        }
+
+        .sticky-box {
+            background: #f39c12;
+            position: sticky;
+            top: 10px; /* 스크롤하다가 이 위치에 도달하면 붙음 */
+        }
+    </style>
+</head>
+<body>
+
+<div id="parent">
+    <div class="box static-box">static (기본)</div>
+    <div class="box relative-box">relative</div>
+    <div class="box absolute-box">absolute</div>
+</div>
+
+<div class="box sticky-box">sticky (스크롤 해보세요)</div>
+
+<div class="box fixed-box">fixed (항상 여기)</div>
+
+</body>
+</html>

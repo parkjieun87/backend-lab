@@ -1,0 +1,27 @@
+# 미니 메신저용 저장소. 루트(backend-lab)의 valkey(6379)와 겹치지 않게 Redis는 6380으로 연다.
+# 초기화: docker compose down -v && docker compose up -d
+services:
+  mariadb:
+    image: mariadb:11.4
+    container_name: messenger-mariadb
+    ports:
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: messenger
+      MARIADB_USER: messenger
+      MARIADB_PASSWORD: messenger
+      TZ: Asia/Seoul
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./docker/mariadb/init:/docker-entrypoint-initdb.d:ro
+      - mariadb-data:/var/lib/mysql
+
+  redis:
+    image: redis:7-alpine
+    container_name: messenger-redis
+    ports:
+      - "6380:6379"
+
+volumes:
+  mariadb-data:
